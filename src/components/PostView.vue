@@ -36,8 +36,8 @@ export default {
     isCarPresent(){
       const arrayLength = this.allCars.length;      
       let splitSearch = this.regnr.substr(0, 2).toUpperCase() + " " + this.regnr.substr(2)
-      for(let i=0; i < arrayLength; i++){
-        let regnr = this.allCars[i].registreringsnummer
+      for (let c in this.allCars){
+        let regnr = this.allCars[c].registreringsnummer
         if(this.regnr.toUpperCase() == regnr || splitSearch.toUpperCase() == regnr ){
           return true;
         }
