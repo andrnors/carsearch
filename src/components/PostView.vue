@@ -33,15 +33,10 @@ export default {
     postCar(){
         this.$http.get("https://cars-a.herokuapp.com/car/" + this.regnr)
         .then(response => {
-          this.newCarObjcet = response.body
-          this.$root.$firebaseRefs.cars.push(
-          {
-            "picture": "https://static.regnr.info/bilder/0/3/thumb_034eb7a2153f3a87b7c1136fe0dae835.jpg",          
-            'registreringsnummer': this.regnr,
-            'type': "Testbil123 MERCEDES",
-            "car": this.newCarObjcet
-          }
-        ).then(this.$router.push("/"));
+          this.newCarObjcet = response.body;
+          this.newCarObjcet["registreringsnummer"] = this.regnr;
+          this.newCarObjcet["picture"] = "https://static.regnr.info/bilder/0/3/thumb_034eb7a2153f3a87b7c1136fe0dae835.jpg";
+          this.$root.$firebaseRefs.cars.push(this.newCarObjcet).then(this.$router.push("/"));
         })
     }
   }
