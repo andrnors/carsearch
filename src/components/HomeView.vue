@@ -51,7 +51,7 @@ export default {
       const arrayLength = this.allCars.length;
       let splitSearch = this.search.substr(0, 2).toUpperCase() + " " + this.search.substr(2)
       console.log(splitSearch)
-      for(let i=0; i < 800; i++){
+      for(let i=0; i < arrayLength; i++){
         let regnr = this.allCars[i].registreringsnummer
         if(this.search.toUpperCase() == regnr || splitSearch.toUpperCase() == regnr ){
           this.car = this.allCars[i]
