@@ -8,8 +8,8 @@
       </div>
       <div class="mdl-cell mdl-cell--4-col mdl-cell--8-col-tablet">
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label is-upgraded is-dirty">
-          <input id="username" type="text" class="mdl-textfield__input"/>
-          <label for="username" class="mdl-textfield__label">Describe me</label>
+          <input id="username" type="text" v-model="regnr" class="mdl-textfield__input"/>
+          <label for="username" class="mdl-textfield__label">Skriv inn registreringsnummer</label>
         </div>
         <div class="actions">
           <a @click.prevent="postCar" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
@@ -24,16 +24,17 @@
 export default {
   data () {
     return {
-      'carUrl': null
+      'carUrl': null,
+       regnr: ""
     }
   },
   methods: {
     postCar(){
-      console.log(this.$root.$firebaseRefs)
+      console.log(this.regnr)
       this.$root.$firebaseRefs.cars.push(
         {
           "picture": "https://static.regnr.info/bilder/0/3/thumb_034eb7a2153f3a87b7c1136fe0dae835.jpg",          
-          'registreingsnummer': "DL12345",
+          'registreringsnummer': this.regnr,
           'type': "Testbil123 MERCEDES"
         }
       ).then(this.$router.push("/"));
