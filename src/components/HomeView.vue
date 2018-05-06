@@ -3,35 +3,33 @@
     <div class="mdl-grid">
       <div class="mdl-cell mdl-cell--3-col mdl-cell mdl-cell--1-col-tablet mdl-cell--hide-phone"></div>
       <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-phone">
-
-            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                <input v-model="search" class="mdl-textfield__input" type="text" name="search" id="search">
-                <label class="mdl-textfield__label" for="search">Søk etter registreringsnummer</label>
-                <span class="mdl-textfield__error">Nå gjorde du noe umulig</span>
-            </div>
-            <p>
-            <button v-on:click="getCar" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-            Søk
-            </button>
-            </p>
-            <div v-if="id" class="image-card" @click="displayDetails(id)">
-              <div class="image-card__picture">
-                <img :src="this.car.picture"/>
-              </div>
-              <div class="image-card__comment mdl-card__actions">
-                <span>{{ this.car.type }} {{ this.car.merke_og_modell }}</span>
-              </div>
-            </div>
-            <div v-else-if="this.car == null">
-              <div class="mdl-card__title">
-                <h2 class="mdl-card__title-text">Bilen finnes ikke</h2>
-              </div>
-              <div class="mdl-card__supporting-text">
-                Hvis du vet at dette er en politibil, så kan du legge den til 
-                databasen ved å trykke på "+"-symbolet nede i hjørnet.
-              </div>
-            </div>
-
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input v-model="search" class="mdl-textfield__input" type="text" name="search" id="search">
+            <label class="mdl-textfield__label" for="search">Søk etter registreringsnummer</label>
+            <span class="mdl-textfield__error">Nå gjorde du noe umulig</span>
+        </div>
+        <p>
+        <button v-on:click="getCar" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+        Søk
+        </button>
+        </p>
+        <div v-if="id" class="image-card" @click="displayDetails(id)">
+          <div class="image-card__picture">
+            <img :src="this.car.picture"/>
+          </div>
+          <div class="image-card__comment mdl-card__actions">
+            <span>{{ this.car.type }} {{ this.car.merke_og_modell }}</span>
+          </div>
+        </div>
+        <div v-else-if="this.car == null">
+          <div class="mdl-card__title">
+            <h2 class="mdl-card__title-text">Bilen finnes ikke</h2>
+          </div>
+          <div class="mdl-card__supporting-text">
+            Hvis du vet at dette er en politibil, så kan du legge den til 
+            databasen ved å trykke på "+"-symbolet nede i hjørnet.
+          </div>
+        </div>
       </div>
     </div>
     <router-link class="add-picture-button mdl-button mdl-js-button mdl-button--fab mdl-button--colored" to="/post">
@@ -50,15 +48,11 @@ export default {
     getCar(){
       const arrayLength = this.allCars.length;
       let splitSearch = this.search.substr(0, 2).toUpperCase() + " " + this.search.substr(2)
-      console.log(splitSearch)
       for(let i=0; i < arrayLength; i++){
         let regnr = this.allCars[i].registreringsnummer
         if(this.search.toUpperCase() == regnr || splitSearch.toUpperCase() == regnr ){
           this.car = this.allCars[i]
           this.id = i;
-          console.log(this.allCars[i])
-          console.log(this.id)
-          console.log(this.car)
           break;
         }
         else{
@@ -67,6 +61,20 @@ export default {
         }
       }
     },
+    saveCarsToCache(){
+      this.$root.$firebaseRefs.cars.once('value', (snapchot) => {
+          let cachedCars = []
+          snapchot.forEach((carSnapchot) => {
+            let cachedCar = carSnapchot.val()
+            cachedCar['.key'] = carSnapchot.key
+            cachedCars.push(cachedCar)
+          })
+          localStorage.setItem('cars', JSON.stringify(cachedCars))
+        })
+      }
+  },
+  mounted () {
+    this.saveCarsToCache()
   },
   data() {
     return {
