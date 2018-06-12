@@ -1,7 +1,8 @@
 # car-search
 
 > First pwa with vue
-> Work in progress
+
+Work in progress
 
 ## Build Setup
 
